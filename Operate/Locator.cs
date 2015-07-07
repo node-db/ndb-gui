@@ -204,7 +204,7 @@ namespace ndb4vs.Operate
             }
             else if (exp.EndsWith("$"))
             {
-                string EndsWith = exp.Substring(1);
+                string EndsWith = exp.Substring(0, exp.Length - 1);
                 if (value != null && value.ToString().EndsWith(EndsWith))
                 {
                     return true;

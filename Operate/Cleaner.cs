@@ -8,7 +8,7 @@ namespace ndb4vs.Operate
     {
         public Dictionary<string, object> clean(Dictionary<string, object> ndb)
         {
-            Dictionary<string, object> ndbResult = new Dictionary<string, object>();
+            Dictionary<string, object> result = new Dictionary<string, object>();
 
             foreach (string key in ndb.Keys)
             {
@@ -16,13 +16,13 @@ namespace ndb4vs.Operate
 
                 if (value is string)
                 {
-                    ndbResult.Add(key, value);
+                    result.Add(key, value);
                 }
                 else if (value is List<object>)
                 {
                     List<object> list = (List<object>)value;
 
-                    List<object> _list = new List<object>();
+                    List<object> tmpList = new List<object>();
 
                     foreach (object item in list)
                     {
@@ -30,7 +30,7 @@ namespace ndb4vs.Operate
                         {
                             if (item != null && !((string)item).Trim().Equals(""))
                             {
-                                _list.Add(item);
+                                tmpList.Add(item);
                             }
                         }
                         else if (item is Dictionary<string, object>)
@@ -38,13 +38,13 @@ namespace ndb4vs.Operate
                             Dictionary<string, object> map = (Dictionary<string, object>)item;
                             if (map.Count > 0)
                             {
-                                _list.Add(clean((Dictionary<string, object>)item));
+                                tmpList.Add(clean((Dictionary<string, object>)item));
                             }
                         }
                     }
-                    if (_list.Count > 0)
+                    if (tmpList.Count > 0)
                     {
-                        ndbResult.Add(key, _list);
+                        result.Add(key, tmpList);
                     }
                 }
                 else if (value is Dictionary<string, object>)
@@ -52,16 +52,16 @@ namespace ndb4vs.Operate
                     Dictionary<string, object> map = (Dictionary<string, object>)value;
                     if (map.Count == 0)
                     {
-                        ndbResult.Remove(key);
+                        result.Remove(key);
                     }
                     else
                     {
-                        ndbResult.Add(key, clean((Dictionary<string, object>)value));
+                        result.Add(key, clean((Dictionary<string, object>)value));
                     }
 
                 }
             }
-            return ndbResult;
+            return result;
         }
     }
 }
